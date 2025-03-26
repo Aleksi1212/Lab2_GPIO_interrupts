@@ -32,7 +32,7 @@ pico_sdk_init()
 # Add the project source files
 add_executable(${PROJECT_NAME}
     src/main.c
-
+    src/utils.c
     # additional source files
 )
 
