@@ -5,15 +5,18 @@
 #include "../include/constants.h"
 #include "../include/utils.h"
 
+static bool led_on = true;
 static uint16_t led_level = MAX_LED_LEVEL + 1;
 
 void change_led_level(uint gpio, uint32_t events)
 {
-    int direction = gpio_get(ROT_B);
-    if (direction == 0 && led_level < MAX_LED_LEVEL + 1) {
-        led_level += 50;
-    } else if (direction > 0 && led_level > 0) {
-        led_level -= 50;
+    if (led_on) {
+        int direction = gpio_get(ROT_B);
+        if (direction == 0 && led_level < MAX_LED_LEVEL + 1) {
+            led_level += 50;
+        } else if (direction > 0 && led_level > 0) {
+            led_level -= 50;
+        }
     }
 }
 
@@ -30,10 +33,11 @@ int main(void)
 
     init_sw_pin(ROT_SW);
 
+    gpio_set_irq_enabled_with_callback(ROT_A, GPIO_IRQ_EDGE_RISE, true, &change_led_level);
+
     stdio_init_all();
 
     bool pressed = false;
-    bool led_on = true;
 
     while (true)
     {
@@ -50,13 +54,10 @@ int main(void)
             sleep_ms(10);
         }
 
-        if (led_on) {
-            gpio_set_irq_enabled_with_callback(ROT_A, GPIO_IRQ_EDGE_RISE, true, &change_led_level);
-
+        if (led_on)
             adjust_leds(led_slices, led_level);
-        } else {
+        else
             adjust_leds(led_slices, 0);
-        }
     }
 
     return 0;
