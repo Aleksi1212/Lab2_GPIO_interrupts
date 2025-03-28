@@ -24,7 +24,7 @@ void init_led_pin(uint gpio, uint *slice_num)
 	*slice_num = pwm_gpio_to_slice_num(gpio);
 
 	pwm_set_clkdiv(*slice_num, CLOCK_DIVIDER);
-	pwm_set_wrap(*slice_num, MAX_LED_LEVEL);
+	pwm_set_wrap(*slice_num, MAX_LED_LEVEL-1);
 	pwm_set_enabled(*slice_num, true);
 }
 

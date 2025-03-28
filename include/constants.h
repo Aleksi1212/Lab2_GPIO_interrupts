@@ -12,6 +12,7 @@
 #define ROT_SW 12
 
 #define CLOCK_DIVIDER 125.0f
-#define MAX_LED_LEVEL 999
+#define MAX_LED_LEVEL 1000
+#define SCROLL_SPEED 50
 
 #endif
